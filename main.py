@@ -1,44 +1,44 @@
 import discord
-import requests
-from bs4 import BeautifulSoup
+from discord.ext import commands
 
 from datetime import date
+import os
+import logging
 
+from discord.app_commands import command
 
-URL = "https://cloud.timeedit.net/nackademin/web/1/ri165vYy57Y405QYfZQ7826XZ10QQ.html"
+import scrape
 
-#response = requests.get(URL)
-
-with open("index.html", "r") as f:
-    content = f.read()
-
-#soup = BeautifulSoup(response.content, "html.parser")
-soup = BeautifulSoup(content, "html.parser")
-
-table = soup.find("table", class_="restable")
-
-days = table.find_all("tr", class_="rr clickable2")
 
 today = str(date.today())
 
+school_info = scrape.get_schoolday_info(today)
 
-school_day_info = {}
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+CHANNEL_ID =    os.getenv("CHANNEL_ID")
 
-found_today = False
+logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s: %(message)s", datefmt="%H:%M:%S")
+log = logging.getLogger("DiscordBot")
 
-for day in days:
-    date_tag = day.find("td", class_="time timeextra c-1 right t")
-    date = date_tag.text.strip()
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-    am_time_tag = day.find("td", class_="time tt c-1")
-    am_time = am_time_tag.text.strip()
 
-    if date == "2025-10-08":
-        school_day_info["date"] = date
-        school_day_info["am_time"] = am_time
-        found_today = True
+class DisplayInfo(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
 
-    elif found_today:
-        break
 
-print(school_day_info)
+@bot.event
+async def on_ready():
+    print(f"Logged in as {bot.user}")
+
+
+@bot.command()
+async def hello(ctx):
+    await ctx.send("Hello!")
+
+
+if __name__ == "__main__":
+    bot.run(DISCORD_TOKEN)
