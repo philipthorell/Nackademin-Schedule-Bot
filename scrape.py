@@ -1,18 +1,24 @@
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+import os
 
 
-URL = "https://cloud.timeedit.net/nackademin/web/1/ri165vYy57Y405QYfZQ7826XZ10QQ.html"
+load_dotenv()
+
+
+URL = os.getenv("URL")
 
 
 def get_soup(url=URL):
-    #response = requests.get(url)
+    response = requests.get(url)
 
-    with open("index.html", "r") as f:
-        content = f.read()
+    #with open("index.html", "r") as f:
+    #    content = f.read()
 
-    #soup = BeautifulSoup(response.content, "html.parser")
-    soup = BeautifulSoup(content, "html.parser")
+    soup = BeautifulSoup(response.content, "html.parser")
+    #soup = BeautifulSoup(content, "html.parser")
 
     return soup
 
