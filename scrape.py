@@ -36,6 +36,7 @@ def get_schoolday_info(today_date):
         teacher = info[5].text.strip()
         course = info[7].text.strip()
         classroom = info[6].text.strip()
+        class_group = info[4].text.strip()
 
         if date == today_date:
             school_day_info["date"] = date
@@ -44,6 +45,7 @@ def get_schoolday_info(today_date):
             school_day_info["course"] = course
             school_day_info["classroom"] = classroom
             school_day_info["time_1"] = time
+            school_day_info["class_group"] = class_group
             found_today = True
 
         elif found_today and weekday:
