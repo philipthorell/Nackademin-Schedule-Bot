@@ -20,8 +20,8 @@ load_dotenv()
 # 2025-11-06 databasteknik
 # 2025-12-04 devops
 # 2025-12-10 affärsmannaskap (fler klasser)
-today = "2025-10-24"
-#today = str(date.today())
+#today = "2025-12-04"
+today = str(date.today())
 
 school_info = scrape.get_schoolday_info(today)
 
@@ -45,10 +45,17 @@ log = logging.getLogger("DiscordBot")
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
 
-
-class DisplayInfo(discord.ui.View):
-    def __init__(self):
-        super().__init__(timeout=None)
+course = school_info["course"].lower()
+if "pythonprogrammering" in course:
+    color = discord.Color.blue()        # blue
+elif "affärsmannaskap" in course:
+    color = discord.Color.green()       # green
+elif "databasteknik" in course:
+    color = discord.Color.orange()      # orange
+elif "devops" in course:
+    color = discord.Color.light_gray()  # light gray
+else:
+    color = discord.Color.purple()      # purple
 
 
 @tasks.loop(hours=24)
@@ -67,7 +74,7 @@ async def daily_schedule():
     embed = discord.Embed(
         title=f"📅 Dagens Schema! ({school_info['weekday']}, {school_info['date']})",
         description=description,
-        color=discord.Color.blue()
+        color=color
     )
 
     await channel.send(embed=embed)
@@ -84,10 +91,15 @@ async def daily_schedule():
 
 @bot.event
 async def on_ready():
-    log.info("Started discord bot")
+    log.info("Discord bot is running!")
     daily_schedule.start()
 
 
 if __name__ == "__main__":
-    bot.run(DISCORD_TOKEN)
-    log.warning("Program exited!")
+    log.info("Starting discord bot...")
+    try:
+        bot.run(DISCORD_TOKEN)
+    except Exception as e:
+        log.error(f"Bot crashed with exception: {e}", exc_info=True)
+    finally:
+        log.info("Program exited!")
