@@ -7,4 +7,4 @@ of that day, for example what course, time,
 and classroom.
 
 ![discord message 1](previews/image1.png)
-![discord message 2](previews/image2.png)
+![discord message 2](previews/image2.jpg)
