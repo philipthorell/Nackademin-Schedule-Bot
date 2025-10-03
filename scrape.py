@@ -28,30 +28,16 @@ def get_schoolday_info(today_date):
     found_today = False
 
     for day in days:
-        date_tag = day.find("td", class_="time timeextra c-1 right t")
-        date = date_tag.text.strip()
+        info = day.find_all("td")
 
-        time_tag = day.find("td", class_="time tt c-1")
-        time = time_tag.text.strip()
+        date = info[2].text.strip()
+        time = info[3].text.strip()
+        weekday = info[1].text.strip()
+        teacher = info[5].text.strip()
+        course = info[7].text.strip()
+        classroom = info[6].text.strip()
 
-        weekday_tag = day.find("td", class_="time timeextra c-1 left t")
-        weekday = weekday_tag.text.strip()
-
-        teacher_tag = day.find("td", class_="column1 columnLine nw c-1")
-        teacher = teacher_tag.text.strip()
-
-        course_tag = day.find("td", class_="column1 columnLine c-1")
-        if course_tag is None:
-            course_tag = day.find_all("td", class_="column1 columnLine nw c-1")[1]
-        course = course_tag.text.strip()
-
-        try:
-            classroom_tag = day.find_all("td", class_="column0 columnLine nw c-1")[1]
-        except IndexError:
-            classroom_tag = day.find("td", class_="column0 columnLine c-1")
-        classroom = classroom_tag.text.strip()
-
-        if date == "2025-12-09":
+        if date == today_date:
             school_day_info["date"] = date
             school_day_info["weekday"] = weekday
             school_day_info["teacher"] = teacher
