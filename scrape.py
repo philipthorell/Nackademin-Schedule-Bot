@@ -15,7 +15,8 @@ def get_soup(url=URL):
     # Gets the stored html for the schedule website, so it doesn't send a lot of requests when testing the code
     #with open("index.html", "r") as f:
     #    content = f.read()
-    # soup = BeautifulSoup(content, "html.parser")
+    #soup = BeautifulSoup(content, "html.parser")
+
     # Gets the code of the schedule website, makes it into a soup object to use for scraping
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
