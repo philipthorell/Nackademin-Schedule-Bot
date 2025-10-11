@@ -128,6 +128,8 @@ async def daily_schedule_task():
                 f"time: {school_info['time_1']} - lunch - {school_info['time_2']} | "
                 f"class-group: {school_info['class_group']}"
             )
+        else:
+            log.info("No lecture for today")
 
 
 @bot.event
@@ -142,7 +144,8 @@ async def on_ready():
 
 
 if __name__ == "__main__":
-    log.info("Starting discord bot...")
+    version = "1.0.0"
+    log.info(f"Starting discord bot version=[{version}]")
 
     # Run the discord bot and log if there is a crash, or the program just exits
     try:

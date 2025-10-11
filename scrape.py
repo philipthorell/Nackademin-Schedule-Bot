@@ -8,7 +8,7 @@ import os
 load_dotenv()
 
 
-URL = os.getenv("URL")
+URL = os.getenv("SCHEDULE_URL")
 
 
 def get_soup(url=URL):

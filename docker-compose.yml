@@ -8,5 +8,5 @@ services:
     environment:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
       - CHANNEL_ID=${CHANNEL_ID}
-      - URL=${URL}
+      - SCHEDULE_URL=${SCHEDULE_URL}
     command: python main.py
