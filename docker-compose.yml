@@ -5,6 +5,8 @@ services:
     container_name: nackademin-bot
     build: .
     restart: always
-    env_file:
-      - .env
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - CHANNEL_ID=${CHANNEL_ID}
+      - URL=${URL}
     command: python main.py
