@@ -32,6 +32,10 @@ def get_schoolday_info(today_date: str):
     """
     soup = get_soup()
     table = soup.find("table", class_="restable")
+    if not table:
+        print("DIDN'T FIND <TABLE> TAG!")
+        return {}
+
     days = table.find_all("tr", class_="rr clickable2")
 
     school_day_info = {}
