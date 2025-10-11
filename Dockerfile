@@ -2,7 +2,7 @@
 FROM python:3.11-slim
 
 # Set working directory
-WORKDIR /app
+WORKDIR ./
 
 # Set timezone (for your 6:00 schedule)
 ENV TZ=Europe/Stockholm

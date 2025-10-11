@@ -6,5 +6,5 @@ services:
     build: .
     restart: always
     volumes:
-      - .:/app
+      - .:./
     command: python main.py
