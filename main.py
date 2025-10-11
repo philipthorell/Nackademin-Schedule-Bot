@@ -65,7 +65,7 @@ async def daily_schedule_task():
     while not bot.is_closed():
         # Create a datetime object for the current time, and the target time
         now = datetime.now()
-        target_time = now.replace(hour=6, minute=0, second=0, microsecond=0)
+        target_time = now.replace(hour=8, minute=0, second=0, microsecond=0)
 
         # if 6:00 has already passed today, then schedule for tomorrow
         if now >= target_time:
