@@ -5,8 +5,6 @@ services:
     container_name: nackademin-bot
     build: .
     restart: always
-    env_file:
-      - .env
     volumes:
       - .:/app
     command: python main.py
