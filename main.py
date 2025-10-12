@@ -50,15 +50,12 @@ def handle_shutdown(signal_number, frame):
         loop = asyncio.get_event_loop()
         if not loop.is_closed():
             # Schedule async cleanup
-            loop.create_task(shutdown_bot())
-
-            # Short delay, so logging & bot shutdown finishes
-            loop.call_later(1, sys.exit, 0)
-        else:
-            sys.exit(0)
+            loop.run_until_complete(shutdown_bot())
     except Exception as e:
         log.error(f"Error during shutdown: {e}", exc_info=True)
-        sys.exit(1)
+    finally:
+        log.info("Shutdown complete. Exiting now.")
+        sys.exit(0)
 
 
 async def shutdown_bot():
