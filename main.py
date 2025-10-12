@@ -32,6 +32,8 @@ logging.getLogger("discord.gateway").setLevel(logging.WARNING)
 logging.getLogger("discord.voice_client").setLevel(logging.WARNING)  # suppresses PyNaCl warning
 log = logging.getLogger("DiscordBot")
 
+discord.VoiceClient = None  # suppress PyNaCl warning
+
 # Give the bot basic intents to only send messages
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
