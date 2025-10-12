@@ -29,6 +29,7 @@ logging.basicConfig(
 # Suppress the standard logs from the discord bot, and make a log object to write logs with
 logging.getLogger("discord.client").setLevel(logging.WARNING)
 logging.getLogger("discord.gateway").setLevel(logging.WARNING)
+logging.getLogger("discord.voice_client").setLevel(logging.WARNING)  # suppresses PyNaCl warning
 log = logging.getLogger("DiscordBot")
 
 # Give the bot basic intents to only send messages
