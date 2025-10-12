@@ -48,14 +48,19 @@ def handle_shutdown(signal_number, frame):
 
     try:
         loop = asyncio.get_event_loop()
-        if not loop.is_closed():
-            # Schedule async cleanup
+        if loop.is_running():
+            # Schedule async cleanup - don't block the signal handler
+            asyncio.create_task(shutdown_bot())
+        else:
+            # If loop isn't running, close it synchronously
             loop.run_until_complete(shutdown_bot())
     except Exception as e:
         log.error(f"Error during shutdown: {e}", exc_info=True)
     finally:
         log.info("Shutdown complete. Exiting now.")
-        sys.exit(0)
+        # Ensure that everything gets logged
+        for handler in log.handlers:
+            handler.flush()
 
 
 async def shutdown_bot():
