@@ -10,5 +10,5 @@ services:
       - CHANNEL_ID=${CHANNEL_ID}
       - SCHEDULE_URL=${SCHEDULE_URL}
     volumes:
-      - ${HOME}/nackademin:/app/logs
+      - ${LOG_PATH}:/app/logs
     command: python main.py
