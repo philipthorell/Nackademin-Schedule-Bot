@@ -40,6 +40,7 @@ def handle_shutdown(signal_number, frame):
     :param frame: Unknown
     :return: None
     """
+    log.info("Shutting down discord bot!")
     try:
         loop = asyncio.get_event_loop()
         if loop.is_running():
@@ -194,7 +195,7 @@ if __name__ == "__main__":
     except Exception as e:
         log.error(f"Bot crashed with exception: {e}", exc_info=True)
     finally:
-        log.info("Exited the program!")
+        log.info("Discord bot is shutdown!")
         # Ensure that everything gets logged
         for handler in log.handlers:
             handler.flush()
