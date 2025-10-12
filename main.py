@@ -34,7 +34,18 @@ log = logging.getLogger("DiscordBot")
 
 
 def handle_shutdown(signal_number, frame):
-    log.info(f"Shutting down discord bot, signal: {signal_number}")
+    """
+    Handles the shutdown of the program, when Docker container is stopped
+    :param signal_number: Integer of the signal status-code
+    :param frame: Unknown
+    :return: None
+    """
+    if signal_number == 15:
+        message = f"Shutting down discord bot, because container was stopped!"
+    else:
+        message = f"Shutting down discord bot, because of signal: ({signal_number})"
+    log.info(message)
+
     try:
         loop = asyncio.get_event_loop()
         if not loop.is_closed():
@@ -51,6 +62,10 @@ def handle_shutdown(signal_number, frame):
 
 
 async def shutdown_bot():
+    """
+    Handles the shutdown of the discord-bot
+    :return: None
+    """
     if bot.is_closed():
         return
     try:
@@ -128,7 +143,7 @@ async def daily_schedule_task():
         # Get the channel to send the message in
         channel = bot.get_channel(CHANNEL_ID)
         if not channel:
-            log.error(f"Couldn't find discord channel ({channel})")
+            log.error(f"Couldn't find the discord channel")
         elif channel and school_info:
             # Get the color for the message embed
             color = get_color(school_info["course"].lower())
