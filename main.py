@@ -40,12 +40,6 @@ def handle_shutdown(signal_number, frame):
     :param frame: Unknown
     :return: None
     """
-    if signal_number == 15:
-        message = f"Shutting down discord bot, because container was stopped!"
-    else:
-        message = f"Shutting down discord bot, because of signal: ({signal_number})"
-    log.info(message)
-
     try:
         loop = asyncio.get_event_loop()
         if loop.is_running():
@@ -56,8 +50,6 @@ def handle_shutdown(signal_number, frame):
             loop.run_until_complete(shutdown_bot())
     except Exception as e:
         log.error(f"Error during shutdown: {e}", exc_info=True)
-    finally:
-        log.info("Shutdown complete. Exiting now.")
 
 
 async def shutdown_bot():
@@ -69,7 +61,6 @@ async def shutdown_bot():
         return
     try:
         await bot.close()
-        log.info("Discord bot connection closed cleanly.")
     except Exception as e:
         log.error(f"Error while closing Discord bot: {e}", exc_info=True)
 
