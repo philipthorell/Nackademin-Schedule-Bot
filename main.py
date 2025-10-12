@@ -58,9 +58,6 @@ def handle_shutdown(signal_number, frame):
         log.error(f"Error during shutdown: {e}", exc_info=True)
     finally:
         log.info("Shutdown complete. Exiting now.")
-        # Ensure that everything gets logged
-        for handler in log.handlers:
-            handler.flush()
 
 
 async def shutdown_bot():
@@ -205,3 +202,8 @@ if __name__ == "__main__":
         bot.run(DISCORD_TOKEN)
     except Exception as e:
         log.error(f"Bot crashed with exception: {e}", exc_info=True)
+    finally:
+        log.info("Exited the program!")
+        # Ensure that everything gets logged
+        for handler in log.handlers:
+            handler.flush()
