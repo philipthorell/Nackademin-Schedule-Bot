@@ -9,4 +9,6 @@ services:
       - DISCORD_TOKEN=${DISCORD_TOKEN}
       - CHANNEL_ID=${CHANNEL_ID}
       - SCHEDULE_URL=${SCHEDULE_URL}
+    volumes:
+      - ${HOME}/nackademin:/app/logs
     command: python main.py

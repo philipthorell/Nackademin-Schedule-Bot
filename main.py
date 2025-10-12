@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 import asyncio
 import os
 import logging
+import sys
 
 import scrape
 
@@ -12,14 +13,17 @@ import scrape
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)  # ensures the folder exists inside container
+
 # Setup basic logging config, and save logs to a file
 logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] [%(levelname)s] %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     handlers=[
-        logging.FileHandler("bot.log", encoding="utf-8"),
-        logging.StreamHandler()
+        logging.FileHandler("logs/bot.log", encoding="utf-8"),  # Save logs to a file
+        logging.StreamHandler(sys.stdout)                               # To view logs live
     ]
 )
 # Suppress the standard logs from the discord bot, and make a log object to write logs with
