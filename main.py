@@ -5,6 +5,7 @@ import asyncio
 import os
 import logging
 import sys
+import signal
 
 import scrape
 
@@ -31,9 +32,40 @@ logging.getLogger("discord.client").setLevel(logging.WARNING)
 logging.getLogger("discord.gateway").setLevel(logging.WARNING)
 log = logging.getLogger("DiscordBot")
 
+
+def handle_shutdown(signal_number, frame):
+    log.info(f"Shutting down discord bot, signal: {signal_number}")
+    try:
+        loop = asyncio.get_event_loop()
+        if not loop.is_closed():
+            # Schedule async cleanup
+            loop.create_task(shutdown_bot())
+
+            # Short delay, so logging & bot shutdown finishes
+            loop.call_later(1, sys.exit, 0)
+        else:
+            sys.exit(0)
+    except Exception as e:
+        log.error(f"Error during shutdown: {e}", exc_info=True)
+        sys.exit(1)
+
+
+async def shutdown_bot():
+    if bot.is_closed():
+        return
+    try:
+        await bot.close()
+        log.info("Discord bot connection closed cleanly.")
+    except Exception as e:
+        log.error(f"Error while closing Discord bot: {e}", exc_info=True)
+
+
 # Give the bot basic intents to only send messages
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
+
+signal.signal(signal.SIGTERM, handle_shutdown)
+signal.signal(signal.SIGINT, handle_shutdown)
 
 
 def get_color(course: str):
@@ -151,10 +183,8 @@ if __name__ == "__main__":
     version = "1.0.0"
     log.info(f"Starting discord bot version=[{version}]")
 
-    # Run the discord bot and log if there is a crash, or the program just exits
+    # Run the discord bot and log if there is a crash
     try:
         bot.run(DISCORD_TOKEN)
     except Exception as e:
         log.error(f"Bot crashed with exception: {e}", exc_info=True)
-    finally:
-        log.info("Program exited!")
