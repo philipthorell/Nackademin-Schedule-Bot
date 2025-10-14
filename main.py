@@ -40,7 +40,7 @@ def handle_shutdown(signal_number, frame):
     :param frame: Unknown
     :return: None
     """
-    log.info("Shutting down discord bot!")
+    log.info("Shutting down Discord bot!")
     try:
         loop = asyncio.get_event_loop()
         if loop.is_running():
@@ -96,8 +96,8 @@ def get_color(course: str):
 
 async def daily_schedule_task():
     """
-    Runs the scraping and bot every day at 6:00 in the morning.
-    Starts by sleeping until 6:00, then scrapes the schedule website,
+    Runs the scraping and bot every day at 8:00 in the morning.
+    Starts by sleeping until 8:00, then scrapes the schedule website,
     and finally sends a discord message with the information about today's
     lecture, if there is a lecture for today
     :return: None
@@ -109,7 +109,7 @@ async def daily_schedule_task():
         now = datetime.now()
         target_time = now.replace(hour=8, minute=0, second=0, microsecond=0)
 
-        # if 6:00 has already passed today, then schedule for tomorrow
+        # if 8:00 has already passed today, then schedule for tomorrow
         if now >= target_time:
             target_time += timedelta(days=1)
 
@@ -162,16 +162,16 @@ async def daily_schedule_task():
 
             # Log the information that was sent
             log.info(
-                "Sent message: "
-                f"{school_info['weekday']} ({school_info['date']}) | "
-                f"course: {school_info['course']} | "
-                f"teacher: {school_info['teacher']} | "
-                f"classroom: {school_info['classroom']} | "
-                f"time: {school_info['time_1']} - lunch - {school_info['time_2']} | "
-                f"class-group: {school_info['class_group']}"
+                "Sent message!\n"
+                f"   ├─ Date: {school_info['date']} ({school_info['weekday']})\n"
+                f"   ├─ Course: {school_info['course']}\n"
+                f"   ├─ Teacher: {school_info['teacher']}\n"
+                f"   ├─ Classroom: {school_info['classroom']}\n"
+                f"   ├─ Time: {time}\n"
+                f"   └─ Class groups: {school_info['class_group']}"
             )
         else:
-            log.info("No lecture for today")
+            log.info("No lecture for today!")
 
 
 @bot.event
@@ -180,22 +180,16 @@ async def on_ready():
     This function runs when the discord bot is up and running for the first time
     :return: None
     """
-    log.info("Discord bot is running!")
     # Create a task for the daily scraping & message sending
     bot.loop.create_task(daily_schedule_task())
 
 
 if __name__ == "__main__":
-    version = "1.0.0"
-    log.info(f"Starting discord bot version=[{version}]")
+    version = "1.0.1"
+    log.info(f"Starting Discord bot! (version: {version})")
 
     # Run the discord bot and log if there is a crash
     try:
         bot.run(DISCORD_TOKEN)
     except Exception as e:
         log.error(f"Bot crashed with exception: {e}", exc_info=True)
-    finally:
-        log.info("Discord bot is shutdown!")
-        # Ensure that everything gets logged
-        for handler in log.handlers:
-            handler.flush()
