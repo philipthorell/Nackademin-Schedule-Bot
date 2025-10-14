@@ -40,7 +40,7 @@ def handle_shutdown(signal_number, frame):
     :param frame: Unknown
     :return: None
     """
-    log.info("Shutting down Discord bot!")
+    log.info("🔴 Shutting down Discord bot!")
     try:
         loop = asyncio.get_event_loop()
         if loop.is_running():
@@ -162,7 +162,7 @@ async def daily_schedule_task():
 
             # Log the information that was sent
             log.info(
-                "Sent message!\n"
+                "📨Sent message!\n"
                 f"   ├─ Date: {school_info['date'] or 'N/A'} ({school_info['weekday'] or 'N/A'})\n"
                 f"   ├─ Course: {school_info['course'] or 'N/A'}\n"
                 f"   ├─ Teacher: {school_info['teacher'] or 'N/A'}\n"
@@ -186,7 +186,7 @@ async def on_ready():
 
 if __name__ == "__main__":
     version = "1.0.1"
-    log.info(f"Starting Discord bot! (version: {version})")
+    log.info(f"🟢 Starting Discord bot! (version: {version})")
 
     # Run the discord bot and log if there is a crash
     try:
