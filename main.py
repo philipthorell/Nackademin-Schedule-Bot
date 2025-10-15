@@ -162,7 +162,7 @@ async def daily_schedule_task():
 
             # Log the information that was sent
             log.info(
-                "📨Sent message!\n"
+                "📨 Sent message!\n"
                 f"   ├─ Date: {school_info['date'] or 'N/A'} ({school_info['weekday'] or 'N/A'})\n"
                 f"   ├─ Course: {school_info['course'] or 'N/A'}\n"
                 f"   ├─ Teacher: {school_info['teacher'] or 'N/A'}\n"
