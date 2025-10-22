@@ -12,22 +12,22 @@ URL = os.getenv("SCHEDULE_URL")
 
 
 def get_soup(url=URL):
-    # Gets the stored html for the schedule website, so it doesn't send a lot of requests when testing the code
+    # Gets the stored html for the schedule website (used for testing)
     #with open("index.html", "r") as f:
     #    content = f.read()
     #soup = BeautifulSoup(content, "html.parser")
 
-    # Gets the code of the schedule website, makes it into a soup object to use for scraping
+    # Gets the code of the schedule website and makes it into a soup object to be used for scraping
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
 
     return soup
 
 
-def get_schoolday_info(today_date: str):
+def get_schoolday_info(target_date: str):
     """
     Gets the information about today's lecture, if there is a lecture today
-    :param today_date: String containing today's date, e.g. 2025-10-04
+    :param target_date: String containing the target-date (the date to find the information about), e.g. 2025-10-04
     :return: Dictionary with the information about today's class, or empty dict if there's no lecture for today
     """
     soup = get_soup()
@@ -54,7 +54,7 @@ def get_schoolday_info(today_date: str):
         course = info[7].text.strip()
 
         # If the current tag is about today, then store all the information
-        if date == today_date:
+        if date == target_date:
             school_day_info["date"] = date
             school_day_info["weekday"] = weekday
             school_day_info["teacher"] = teacher
