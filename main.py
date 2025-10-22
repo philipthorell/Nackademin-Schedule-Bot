@@ -166,15 +166,17 @@ async def daily_schedule_task():
             # Send schedule message
             await channel.send(embed=embed)
 
+            space = " " * 29
+
             # Log the information that was sent
             log.info(
                 "✅ Sent message!\n"
-                f"   ├─ Date: {school_info['date'] or 'N/A'} ({school_info['weekday'] or 'N/A'})\n"
-                f"   ├─ Course: {school_info['course'] or 'N/A'}\n"
-                f"   ├─ Teacher: {school_info['teacher'] or 'N/A'}\n"
-                f"   ├─ Classroom: {school_info['classroom'] or 'N/A'}\n"
-                f"   ├─ Time: {time or 'N/A'}\n"
-                f"   └─ Class groups: {school_info['class_group'] or 'N/A'}"
+                f"{space}├─ Date: {school_info['date'] or 'N/A'} ({school_info['weekday'] or 'N/A'})\n"
+                f"{space}├─ Course: {school_info['course'] or 'N/A'}\n"
+                f"{space}├─ Teacher: {school_info['teacher'] or 'N/A'}\n"
+                f"{space}├─ Classroom: {school_info['classroom'] or 'N/A'}\n"
+                f"{space}├─ Time: {time or 'N/A'}\n"
+                f"{space}└─ Class groups: {school_info['class_group'] or 'N/A'}"
             )
         else:
             log.info("❌ No lecture for tomorrow!")
