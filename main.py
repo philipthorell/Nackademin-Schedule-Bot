@@ -50,7 +50,7 @@ def handle_shutdown(signal_number, frame):
             # If loop isn't running, close it synchronously
             loop.run_until_complete(shutdown_bot())
     except Exception as e:
-        log.error(f"Error during shutdown: {e}", exc_info=True)
+        log.error(f"⚠️ Error during shutdown: {e}", exc_info=True)
 
 
 async def shutdown_bot():
@@ -63,7 +63,7 @@ async def shutdown_bot():
     try:
         await bot.close()
     except Exception as e:
-        log.error(f"Error while closing Discord bot: {e}", exc_info=True)
+        log.error(f"⚠️ Error while closing Discord bot: {e}", exc_info=True)
 
 
 # Give the bot basic intents to only send messages
@@ -140,7 +140,7 @@ async def daily_schedule_task():
         # Get the channel to send the message in
         channel = bot.get_channel(CHANNEL_ID)
         if not channel:
-            log.error(f"Couldn't find the discord channel")
+            log.error(f"⚠️ Couldn't find the discord channel")
         elif channel and school_info:
             # Get the color for the message embed
             color = get_color(school_info["course"])
@@ -168,7 +168,7 @@ async def daily_schedule_task():
 
             # Log the information that was sent
             log.info(
-                "📨 Sent message!\n"
+                "✅ Sent message!\n"
                 f"   ├─ Date: {school_info['date'] or 'N/A'} ({school_info['weekday'] or 'N/A'})\n"
                 f"   ├─ Course: {school_info['course'] or 'N/A'}\n"
                 f"   ├─ Teacher: {school_info['teacher'] or 'N/A'}\n"
@@ -177,7 +177,7 @@ async def daily_schedule_task():
                 f"   └─ Class groups: {school_info['class_group'] or 'N/A'}"
             )
         else:
-            log.info("No lecture for tomorrow!")
+            log.info("❌ No lecture for tomorrow!")
 
 
 @bot.event
@@ -198,4 +198,4 @@ if __name__ == "__main__":
     try:
         bot.run(DISCORD_TOKEN)
     except Exception as e:
-        log.error(f"Bot crashed with exception: {e}", exc_info=True)
+        log.error(f"⚠️ Bot crashed with exception: {e}", exc_info=True)
