@@ -150,15 +150,15 @@ async def daily_schedule_task():
 
             # Create the description for the message embed
             description = "\u200b\n"  # "\u200b" is an invisible character
-            description += f"**• 📚 Kurs:** {school_info['course']}\n\n"
-            description += f"**• 👨‍🏫 Lärare:** {school_info['teacher']}\n\n" if school_info["teacher"] else ""
-            description += f"**• 🏫 Sal:** {school_info['classroom']}\n\n" if school_info["classroom"] else ""
-            description += f"**• ⏰ Tid:** {time}\n\n"
-            description += f"**• 👥 Klasser:** {school_info['class_group']}" if school_info["class_group"].lower() != "pia25" else ""
+            description += f"**• 📚 Course:** {school_info['course']}\n\n"
+            description += f"**• 👨‍🏫 Teacher:** {school_info['teacher']}\n\n" if school_info["teacher"] else ""
+            description += f"**• 🏫 Room:** {school_info['classroom']}\n\n" if school_info["classroom"] else ""
+            description += f"**• ⏰ Time:** {time}\n\n"
+            description += f"**• 👥 Classes:** {school_info['class_group']}" if school_info["class_group"].lower() != "pia25" else ""
 
             # Create the embed for the discord message
             embed = discord.Embed(
-                title=f"📅 Schemat för imorgon! ({school_info['weekday']}, {school_info['date']})",
+                title=f"📅 Tomorrow's Schedule! ({school_info['weekday']}, {school_info['date']})",
                 description=description,
                 color=color
             )
