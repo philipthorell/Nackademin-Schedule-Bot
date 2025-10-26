@@ -43,7 +43,7 @@ signal.signal(signal.SIGINT, handle_shutdown)
 
 
 if __name__ == "__main__":
-    version = "1.1.0"
+    version = "1.2.0"
     log.info(f"🟢 Starting Discord bot! (version: {version})")
 
     # Run the discord bot and log if there is a crash

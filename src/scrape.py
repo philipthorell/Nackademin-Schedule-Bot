@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 import os
 
-# This isn't needed when running it in the container,
+# This isn't needed when running it in the docker container,
 # since the environment variables are already specified in the docker-compose.yml
 # It's only here for running the program locally
 load_dotenv()
@@ -13,7 +13,12 @@ load_dotenv()
 URL = os.getenv("SCHEDULE_URL")
 
 
-def get_soup(url=URL):
+def get_soup(url: str = URL):
+    """
+    Creates a BeautifulSoup object from the given url
+    :param url: String of the schedule url
+    :return: None
+    """
     # Gets the stored html for the schedule website (used for testing)
     #with open("index.html", "r") as f:
     #    content = f.read()
