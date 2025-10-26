@@ -1,77 +1,21 @@
 import discord
-
-from datetime import date, datetime, timedelta
 import asyncio
+
 import os
+import datetime
 import logging
-import sys
-import signal
 
 import scrape
-
 
 # Gets the discord token and the discord channel id from .env file
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 
-log_dir = "logs"
-os.makedirs(log_dir, exist_ok=True)  # ensures the folder exists inside container
-
-# Setup basic logging config, and save logs to a file
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    handlers=[
-        logging.FileHandler("logs/bot.log", encoding="utf-8"),  # Save logs to a file
-        logging.StreamHandler(sys.stdout)                               # To view logs live
-    ]
-)
-# Suppress the standard logs from the discord bot, and make a log object to write logs with
-logging.getLogger("discord.client").setLevel(logging.WARNING)
-logging.getLogger("discord.gateway").setLevel(logging.WARNING)
-log = logging.getLogger("DiscordBot")
-
-
-def handle_shutdown(signal_number, frame):
-    """
-    Handles the shutdown of the program, when Docker container is stopped
-    :param signal_number: Integer of the signal status-code
-    :param frame: Unknown
-    :return: None
-    """
-    log.info("🔴 Shutting down Discord bot!")
-    try:
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            # Schedule async cleanup - don't block the signal handler
-            asyncio.create_task(shutdown_bot())
-        else:
-            # If loop isn't running, close it synchronously
-            loop.run_until_complete(shutdown_bot())
-    except Exception as e:
-        log.error(f"⚠️ Error during shutdown: {e}", exc_info=True)
-
-
-async def shutdown_bot():
-    """
-    Handles the shutdown of the discord-bot
-    :return: None
-    """
-    if bot.is_closed():
-        return
-    try:
-        await bot.close()
-    except Exception as e:
-        log.error(f"⚠️ Error while closing Discord bot: {e}", exc_info=True)
-
-
 # Give the bot basic intents to only send messages
 intents = discord.Intents.default()
 bot = discord.Client(intents=intents)
 
-signal.signal(signal.SIGTERM, handle_shutdown)
-signal.signal(signal.SIGINT, handle_shutdown)
+log = logging.getLogger("DiscordBot")
 
 
 def get_color(course: str):
@@ -112,12 +56,12 @@ async def daily_schedule_task():
     await bot.wait_until_ready()
     while not bot.is_closed():
         # Create a datetime object for the current time, and the target time
-        now = datetime.now()
+        now = datetime.datetime.now()
         target_time = now.replace(hour=20, minute=0, second=0, microsecond=0)
 
         # if the target time has already passed today, then schedule for tomorrow
         if now >= target_time:
-            target_time += timedelta(days=1)
+            target_time += datetime.timedelta(days=1)
 
         # Get the time to wait in seconds and sleep for that long
         wait_seconds = (target_time - now).total_seconds()
@@ -134,7 +78,7 @@ async def daily_schedule_task():
         # today = "2025-12-04"
 
         # Get the date for today and the scraped information
-        tomorrow = str(date.today() + timedelta(days=1))
+        tomorrow = str(datetime.date.today() + datetime.timedelta(days=1))
         school_info = scrape.get_schoolday_info(tomorrow)
 
         # Get the channel to send the message in
@@ -190,14 +134,3 @@ async def on_ready():
     """
     # Create a task for the daily scraping & message sending
     bot.loop.create_task(daily_schedule_task())
-
-
-if __name__ == "__main__":
-    version = "1.1.0"
-    log.info(f"🟢 Starting Discord bot! (version: {version})")
-
-    # Run the discord bot and log if there is a crash
-    try:
-        bot.run(DISCORD_TOKEN)
-    except Exception as e:
-        log.error(f"⚠️ Bot crashed with exception: {e}", exc_info=True)

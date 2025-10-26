@@ -11,4 +11,4 @@ services:
       - SCHEDULE_URL=${SCHEDULE_URL}
     volumes:
       - ${LOG_PATH}:/app/logs
-    command: python main.py
+    command: python src/main.py

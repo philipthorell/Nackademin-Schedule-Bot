@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 
 import os
 
-
+# This isn't needed when running it in the container,
+# since the environment variables are already specified in the docker-compose.yml
+# It's only here for running the program locally
 load_dotenv()
 
 
