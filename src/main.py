@@ -1,6 +1,9 @@
-import signal
+import asyncio
 
-from src.discord_bot import *
+import signal
+import logging
+
+from src.discord_bot import DiscordClient
 
 
 def handle_shutdown(signal_number: int, frame):
@@ -36,8 +39,10 @@ async def shutdown_bot():
         log.error(f"⚠️ Error while closing Discord bot: {e}", exc_info=True)
 
 
+# Get the logger for the discord bot
 log = logging.getLogger("DiscordBot")
 
+# Connect SIGTERM & SIGINT to the handle_shutdown function (these signals are sent when stopping the docker container)
 signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
@@ -48,6 +53,6 @@ if __name__ == "__main__":
 
     # Run the discord bot and log if there is a crash
     try:
-        bot.run(DISCORD_TOKEN)
+        bot = DiscordClient()
     except Exception as e:
         log.error(f"⚠️ Bot crashed with exception: {e}", exc_info=True)
