@@ -19,11 +19,6 @@ def get_soup(url: str = URL):
     :param url: String of the schedule url
     :return: None
     """
-    # Gets the stored html for the schedule website (used for testing)
-    #with open("index.html", "r") as f:
-    #    content = f.read()
-    #soup = BeautifulSoup(content, "html.parser")
-
     # Gets the code of the schedule website and makes it into a soup object to be used for scraping
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
