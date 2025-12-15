@@ -24,5 +24,6 @@ schools schedule app and manually search for the
 information about the day's lecture!
 
 ### Discord-message previews
-![discord message 1](previews/image1.png)
+![discord message 1](previews/image1.jpg)
 ![discord message 2](previews/image2.jpg)
+![discord message 3](previews/image3.jpg)
