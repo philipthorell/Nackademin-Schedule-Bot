@@ -26,17 +26,17 @@ def get_soup(url: str = URL):
     return soup
 
 
-def get_schoolday_info(target_date: str):
+def get_schoolday_info(target_date: str) -> list[dict]:
     """
     Gets the information about today's lecture, if there is a lecture today
     :param target_date: String containing the target-date (the date to find the information about), e.g. 2025-10-04
-    :return: Dictionary with the information about today's class, or empty dict if there's no lecture for today
+    :return: List with dictionaries containing the information about today's class
     """
     soup = get_soup()
     table = soup.find("table", class_="restable")
     if not table:
         print("DIDN'T FIND <TABLE> TAG!")
-        return {}
+        return [{}]
 
     days = table.find_all("tr", class_="rr clickable2")
 
