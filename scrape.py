@@ -56,6 +56,7 @@ def get_schoolday_info(target_date: str):
             school_day_info["course"] = course
             school_day_info["classroom"] = classroom
             school_day_info["time_1"] = time
+            school_day_info["time_2"] = ""
             school_day_info["class_group"] = class_group
             found_today = True
 

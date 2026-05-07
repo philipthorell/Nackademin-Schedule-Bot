@@ -188,8 +188,9 @@ async def on_ready():
     This function runs when the discord bot is up and running for the first time
     :return: None
     """
-    # Create a task for the daily scraping & message sending
-    bot.loop.create_task(daily_schedule_task())
+    if not hasattr(bot, "_task_started"):
+        bot._task_started = True
+        bot.loop.create_task(daily_schedule_task())
 
 
 if __name__ == "__main__":
